@@ -1,0 +1,2 @@
+ML model used features: ['sleephours', 'heartrate', 'calories']
+Predicted next-day steps (sample input = feature means): 7073
