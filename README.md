@@ -95,7 +95,7 @@ streamlit run dashboard.py
 
 The dashboard will open in your default browser at:
 
-http://localhost:8502
+http://localhost:8501
 
 Usage
 
