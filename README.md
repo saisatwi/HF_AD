@@ -1,10 +1,9 @@
 HF_AD — Health & Finance Analytics Dashboard
 Project Overview
 
-HF_AD is a comprehensive Health and Finance Analytics Dashboard developed using Python.
-This project demonstrates end-to-end data analysis skills, dashboard creation, and ML-based prediction, making it suitable for Data Analyst, Data Engineering, and AI/ML roles.
+HF_AD is a comprehensive Health and Finance Analytics Dashboard developed using Python. This project demonstrates end-to-end data analysis skills, interactive dashboard creation, and ML-based prediction, making it suitable for Data Analyst, Data Engineering, and AI/ML roles.
 
-Key objectives:
+Key Objectives
 
 Explore, clean, and analyze health & finance datasets.
 
@@ -12,14 +11,14 @@ Visualize key metrics and trends using interactive charts.
 
 Provide actionable insights via KPIs and predictions.
 
-Allow report downloads for further use.
+Enable report downloads for further use.
 
 Features
 Health Analytics
 
 Daily Steps Trend
 
-Sleep Hours Distribution
+Sleep Hours Trend & Distribution
 
 Heart Rate Trend
 
@@ -35,13 +34,15 @@ Income Trend Over Time
 
 Interactive Dashboard Features
 
-Sidebar filters: select date ranges, categories
+Sidebar filters: select date ranges and finance categories.
 
-KPI cards: Total Steps, Avg Sleep, Avg Heart Rate, Total Income, Total Expense
+KPI cards: Total Steps, Avg Sleep, Avg Heart Rate, Total Income, Total Expense.
 
-Download filtered data as CSV reports
+Download filtered data as CSV reports.
 
-Fully interactive charts for insights
+Fully interactive charts for insights.
+
+Light/Dark theme toggle for user-friendly visualization.
 
 Tech Stack & Libraries
 
@@ -49,7 +50,7 @@ Languages: Python 3.10+
 
 Data Analysis: pandas, numpy
 
-Visualization: matplotlib, seaborn
+Visualization: plotly, seaborn
 
 Machine Learning: scikit-learn (Linear Regression)
 
@@ -59,76 +60,54 @@ Optional DB/ETL: SQLite, PostgreSQL, Snowflake (future extension)
 
 Folder Structure
 HF_AD/
-├── dashboard.py          # Streamlit dashboard
-├── analysis.py           # Data cleaning & analysis
+├── app.py                   # Streamlit dashboard
+├── analysis.py              # Data cleaning & analysis
 ├── data/
-│   ├── health_data.csv
-│   └── finance_data.csv
-├── venv/                 # Python virtual environment
+│   ├── health_data_cleaned.csv
+│   └── finance_data_cleaned.csv
+├── venv/                    # Python virtual environment
 ├── requirements.txt
 └── README.md
 
 Installation & Setup
-
-Clone the repository:
-
-git clone https://github.com/<yourusername>/HF_AD.git
+1. Clone the repository
+git clone https://github.com/saisatwi/HF_AD.git
 cd HF_AD
 
-
-Create and activate virtual environment:
-
+2. Create and activate virtual environment
 python -m venv venv
-venv\Scripts\activate    # Windows
-# source venv/bin/activate   # macOS/Linux
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+# source venv/bin/activate
 
-
-Install required libraries:
-
+3. Install required libraries
 pip install -r requirements.txt
 
-
-Run the dashboard:
-
-streamlit run dashboard.py
+4. Run the Streamlit dashboard
+streamlit run app.py
 
 
-The dashboard will open in your default browser at:
+## Live Dashboard
 
-http://localhost:8501
+The **HF_AD — Health & Finance Analytics Dashboard** is fully interactive and can be accessed online here:
 
-Usage
+[View Live Dashboard](https://hfad-wa5yumpcftkn2bdbnnfxov.streamlit.app)
 
-Use sidebar filters to select specific date ranges and finance categories.
-
-Explore KPIs and trends in health and finance.
-
-Download CSV reports of filtered data.
-
-View predicted steps for the next day to showcase ML capability.
-
-Screenshots
-
-(Add screenshots of your dashboard here for professional touch)
-
-Skills Showcased
-
-Data Cleaning & Analysis
-
-Data Visualization & Reporting
-
-Machine Learning (Prediction)
-
-Dashboard Development (Streamlit)
-
-Optional: SQL / ETL Integration
+Features include:
+- Interactive KPIs for Health & Finance
+- Line, Bar, Pie Charts with filters
+- Sidebar controls for date range and finance categories
+- Download filtered CSV reports
+- Predicted steps for the next day
+- Light/Dark Mode toggle
 
 Future Enhancements
 
-Deploy dashboard online (Streamlit Cloud, AWS, Heroku)
+Deploy dashboard online (Streamlit Cloud, AWS, Heroku).
 
-Include more advanced ML predictions (e.g., expense forecasting)
+Include more advanced ML predictions (e.g., expense forecasting).
 
-Integrate multiple datasets and build relational database dashboards
+Integrate multiple datasets and build relational database dashboards.
 
-Add PDF / Excel export of charts and reports
+Add PDF / Excel export of charts and reports.
