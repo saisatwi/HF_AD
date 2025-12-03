@@ -88,36 +88,19 @@ pip install -r requirements.txt
 streamlit run app.py
 
 
-The dashboard will open in your default browser at:
-http://localhost:8501
+## Live Dashboard
 
-Usage
+The **HF_AD — Health & Finance Analytics Dashboard** is fully interactive and can be accessed online here:
 
-Use sidebar filters to select date ranges and finance categories.
+[View Live Dashboard](https://hfad-wa5yumpcftkn2bdbnnfxov.streamlit.app)
 
-Explore KPIs and trends in health and finance.
-
-Download CSV reports of filtered data.
-
-View predicted steps for the next day to showcase ML capability.
-
-Switch between Light/Dark mode for better visualization.
-
-Screenshots
-
-(Add screenshots of your dashboard here for professional presentation)
-
-Skills Showcased
-
-Data Cleaning & Analysis
-
-Data Visualization & Reporting
-
-Machine Learning (Prediction)
-
-Dashboard Development (Streamlit)
-
-Optional: SQL / ETL Integration
+Features include:
+- Interactive KPIs for Health & Finance
+- Line, Bar, Pie Charts with filters
+- Sidebar controls for date range and finance categories
+- Download filtered CSV reports
+- Predicted steps for the next day
+- Light/Dark Mode toggle
 
 Future Enhancements
 
