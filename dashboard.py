@@ -1,183 +1,128 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import os
+from pathlib import Path
 
-# -------------------------------------------------------
-# CONFIG
-# -------------------------------------------------------
+# --------------------------
+# PAGE CONFIG
+# --------------------------
 st.set_page_config(
-    page_title="Health & Finance Dashboard",
-    layout="wide",
-    page_icon="📊"
+    page_title="HF_AD Analytics Dashboard",
+    page_icon="📊",
+    layout="wide"
 )
 
-st.title("📊 My Personal Health & Finance Dashboard")
-st.markdown("Interactive analytics built from cleaned datasets.")
+st.title("📊 Health + Finance Analytics Dashboard")
+st.markdown("### All analytics generated from your cleaned CSV datasets.")
 
-DATA_PATH = "data"
-OUTPUT_PATH = "output"
-
-# -------------------------------------------------------
+# --------------------------
 # LOAD DATA
-# -------------------------------------------------------
-@st.cache_data
-def load_data():
-    health = pd.read_csv(f"{DATA_PATH}/health_data_cleaned.csv")
-    finance = pd.read_csv(f"{DATA_PATH}/finance_data_cleaned.csv")
+# --------------------------
+DATA_DIR = Path("data")
 
-    # Cleanup
-    health.columns = [c.strip().title().replace(" ", "") for c in health.columns]
-    finance.columns = [c.strip().title().replace(" ", "") for c in finance.columns]
+health_file = DATA_DIR / "health_data_cleaned.csv"
+finance_file = DATA_DIR / "finance_data_cleaned.csv"
 
-    if "Date" in health.columns:
-        health["Date"] = pd.to_datetime(health["Date"])
-    if "Date" in finance.columns:
-        finance["Date"] = pd.to_datetime(finance["Date"])
+try:
+    health_df = pd.read_csv(health_file)
+    finance_df = pd.read_csv(finance_file)
+except FileNotFoundError:
+    st.error("❌ CSV files not found. Ensure they exist in the /data folder.")
+    st.stop()
 
-    return health, finance
+# Convert dates
+health_df["Date"] = pd.to_datetime(health_df["Date"])
+finance_df["Date"] = pd.to_datetime(finance_df["Date"])
 
-health_df, finance_df = load_data()
-
-# -------------------------------------------------------
+# --------------------------
 # SIDEBAR FILTERS
-# -------------------------------------------------------
-st.sidebar.header("🔍 Filters")
+# --------------------------
+st.sidebar.header("🔎 Filters")
 
-# Health date filter
-if "Date" in health_df.columns:
-    start_date = st.sidebar.date_input("Health Start Date", health_df["Date"].min())
-    end_date = st.sidebar.date_input("Health End Date", health_df["Date"].max())
+date_range = st.sidebar.date_input(
+    "Select Date Range",
+    value=[health_df["Date"].min(), health_df["Date"].max()]
+)
 
-    health_filtered = health_df[
-        (health_df["Date"] >= pd.to_datetime(start_date)) &
-        (health_df["Date"] <= pd.to_datetime(end_date))
-    ]
-else:
-    health_filtered = health_df
+health_filtered = health_df[
+    (health_df["Date"] >= pd.to_datetime(date_range[0])) &
+    (health_df["Date"] <= pd.to_datetime(date_range[1]))
+]
 
-# Finance Category filter
-category_filter = st.sidebar.multiselect(
+finance_filtered = finance_df[
+    (finance_df["Date"] >= pd.to_datetime(date_range[0])) &
+    (finance_df["Date"] <= pd.to_datetime(date_range[1]))
+]
+
+st.sidebar.markdown("---")
+selected_category = st.sidebar.multiselect(
     "Finance Categories",
     options=finance_df["Category"].unique(),
     default=finance_df["Category"].unique()
 )
-finance_filtered = finance_df[finance_df["Category"].isin(category_filter)]
+finance_filtered = finance_filtered[finance_filtered["Category"].isin(selected_category)]
 
-# -------------------------------------------------------
-# KPI CALCULATIONS
-# -------------------------------------------------------
+# --------------------------
+# HEALTH SECTION
+# --------------------------
+st.header("💪 Health Analytics")
 
-# HEALTH KPIs
-steps_avg = int(health_filtered["Steps"].mean()) if "Steps" in health_filtered else 0
-sleep_avg = round(health_filtered["Sleephours"].mean(), 2) if "Sleephours" in health_filtered else 0
-calories_avg = int(health_filtered["Calories"].mean()) if "Calories" in health_filtered else 0
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Total Steps", f"{health_filtered['Steps'].sum():,}")
+col2.metric("Total Calories", f"{health_filtered['Calories'].sum():,}")
+col3.metric("Avg Sleep (hrs)", f"{health_filtered['Sleephours'].mean():.2f}")
+col4.metric("Avg Heart Rate", f"{health_filtered['Heartrate'].mean():.2f}")
 
-# FINANCE KPIs
-total_income = int(finance_filtered[finance_filtered["Category"] == "Income"]["Amount"].sum())
-total_expenses = int(finance_filtered[finance_filtered["Category"] == "Expense"]["Amount"].sum())
-total_savings = total_income - total_expenses
-
-# -------------------------------------------------------
-# KPI DISPLAY
-# -------------------------------------------------------
-st.subheader("📌 Key Performance Indicators")
-
-c1, c2, c3, c4, c5 = st.columns(5)
-
-c1.metric("🦶 Avg Steps", steps_avg)
-c2.metric("🔥 Avg Calories Burned", calories_avg)
-c3.metric("😴 Avg Sleep Hours", sleep_avg)
-c4.metric("💰 Total Income", f"₹{total_income}")
-c5.metric("💸 Total Expenses", f"₹{total_expenses}")
-
-st.metric("💵 Net Savings", f"₹{total_savings}")
-
-# -------------------------------------------------------
-# HEALTH CHARTS
-# -------------------------------------------------------
-st.header("🏃 Health Analytics")
-
-if "Steps" in health_filtered:
-    fig = px.line(health_filtered, x="Date", y="Steps", title="Daily Steps Trend", markers=True)
-    st.plotly_chart(fig, use_container_width=True)
-
-if "Calories" in health_filtered:
-    fig = px.area(health_filtered, x="Date", y="Calories", title="Daily Calories Burned")
-    st.plotly_chart(fig, use_container_width=True)
-
-if "Sleephours" in health_filtered:
-    fig = px.histogram(health_filtered, x="Sleephours", nbins=15, title="Sleep Hours Distribution")
-    st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------------------------------
-# FINANCE CHARTS (FIXED)
-# -------------------------------------------------------
-st.header("💵 Finance Analytics")
-
-# 1. Income vs Expenses Bar Chart
-finance_summary = finance_filtered.groupby("Category")["Amount"].sum().reset_index()
-
-fig = px.bar(
-    finance_summary,
-    x="Category",
-    y="Amount",
-    title="Income vs Expenses",
-    text_auto=True
-)
+# Line chart – Steps over time
+st.subheader("📈 Daily Steps Trend")
+fig = px.line(health_filtered, x="Date", y="Steps", title="Steps Over Time")
 st.plotly_chart(fig, use_container_width=True)
 
-# 2. Monthly Trend
-if "Month" in finance_filtered:
-    monthly = finance_filtered.groupby(["Month", "Category"])["Amount"].sum().reset_index()
-    fig = px.bar(
-        monthly,
-        x="Month",
-        y="Amount",
-        color="Category",
-        barmode="group",
-        title="Monthly Income & Expense Trend"
-    )
-    st.plotly_chart(fig, use_container_width=True)
+# Sleep Hours
+st.subheader("😴 Sleep Hours Trend")
+fig = px.line(health_filtered, x="Date", y="Sleephours", title="Sleep Hours Over Time")
+st.plotly_chart(fig, use_container_width=True)
 
-# 3. Expense Share Pie Chart (Expense Only)
-expense_only = finance_filtered[finance_filtered["Category"] == "Expense"]
+# Heart Rate
+st.subheader("❤️ Heart Rate Trend")
+fig = px.line(health_filtered, x="Date", y="Heartrate", title="Heart Rate Over Time")
+st.plotly_chart(fig, use_container_width=True)
 
-if not expense_only.empty:
-    fig = px.pie(
-        expense_only,
-        names="Notes",
-        values="Amount",
-        title="Expense Breakdown by Notes"
-    )
-    st.plotly_chart(fig, use_container_width=True)
-else:
-    st.info("No expense data available for pie chart.")
+# --------------------------
+# FINANCE SECTION
+# --------------------------
+st.header("💰 Finance Analytics")
 
-# -------------------------------------------------------
-# IMAGES FROM OUTPUT/
-# -------------------------------------------------------
-st.header("🖼️ Generated Images")
+col1, col2 = st.columns(2)
+col1.metric("Total Transactions", f"{len(finance_filtered)}")
+col2.metric("Total Expenses (Amount)", f"₹{finance_filtered['Amount'].sum():,}")
 
-if os.path.exists("output/"):
-    files = [f for f in os.listdir("output") if f.endswith(".png")]
-    if files:
-        for img in files:
-            st.image(f"output/{img}", caption=img)
-    else:
-        st.info("No images found.")
-else:
-    st.error("Output folder missing!")
+# Expense Trend
+st.subheader("📉 Expense Trend by Date")
+fig = px.line(finance_filtered, x="Date", y="Amount", title="Expenses Over Time")
+st.plotly_chart(fig, use_container_width=True)
 
-# -------------------------------------------------------
-# RAW DATA VIEW
-# -------------------------------------------------------
-st.header("📄 Raw Data Preview")
+# Category Bar Chart
+st.subheader("🏷️ Spending by Category")
+category_totals = finance_filtered.groupby("Category")["Amount"].sum().reset_index()
+fig = px.bar(category_totals, x="Category", y="Amount", title="Category-wise Expense Distribution")
+st.plotly_chart(fig, use_container_width=True)
 
-with st.expander("Show Health Data"):
-    st.dataframe(health_df)
+# Pie Chart
+st.subheader("🥧 Expense Share by Category")
+fig = px.pie(category_totals, names="Category", values="Amount", title="Expense Breakdown")
+st.plotly_chart(fig, use_container_width=True)
 
-with st.expander("Show Finance Data"):
-    st.dataframe(finance_df)
+# Monthly Trend
+finance_df["Month"] = finance_df["Date"].dt.to_period("M").astype(str)
+monthly_totals = finance_df.groupby("Month")["Amount"].sum().reset_index()
 
-st.success("Dashboard Loaded Successfully!")
+st.subheader("📆 Monthly Total Expenses")
+fig = px.bar(monthly_totals, x="Month", y="Amount", title="Monthly Spending Trend")
+st.plotly_chart(fig, use_container_width=True)
+
+# --------------------------
+# FOOTER
+# --------------------------
+st.markdown("---")
+st.markdown("### ✔ Dashboard generated automatically based on your CSV data.")
