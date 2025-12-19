@@ -1,115 +1,147 @@
-# HF_AD — Health & Finance Analytics Dashboard
+📊 HF_AD — Health & Finance Analytics Dashboard
 
-## Project Overview
-HF_AD is a **comprehensive Health and Finance Analytics Dashboard** developed using Python.  
-This project demonstrates **end-to-end data analysis, visualization, and ML-based prediction**, making it ideal for **Data Analyst, Data Engineering, and AI/ML roles**.
+HF_AD is an end-to-end Health & Finance Analytics Dashboard project that demonstrates real-world data workflows — from data ingestion and SQL storage to interactive dashboards in Streamlit and Tableau.
 
-With this project, you can:
-- Explore, clean, and analyze health and finance datasets.
-- Visualize key metrics and trends using interactive charts.
-- Provide actionable insights via KPIs and basic ML predictions.
-- Download reports for further analysis.
+This project is designed to showcase skills required for Data Analyst, Business Intelligence, and Analytics Engineer roles.
 
----
+🚀 Project Objectives
 
-## Live Dashboard
-Access the fully interactive dashboard here:  
-[**HF_AD Streamlit Dashboard**](https://hfad-wa5yumpcftkn2bdbnnfxov.streamlit.app)
+Collect, clean, and analyze health and finance datasets
 
----
+Store structured data in a SQL database (PostgreSQL)
 
-## Features
+Build interactive dashboards using:
 
-### Health Analytics
-- Daily Steps Trend
-- Sleep Hours Distribution
-- Heart Rate Trend
-- Predicted Steps for Next Day (Linear Regression)
+Streamlit (Python-based analytics app)
 
-### Finance Analytics
-- Income vs Expense Pie Chart
-- Expense Trend Over Time
-- Income Trend Over Time
+Tableau Public (BI & storytelling)
 
-### Interactive Dashboard
-- Sidebar filters: select date ranges, categories
-- KPI cards: Total Steps, Avg Sleep, Avg Heart Rate, Total Income, Total Expense
-- Download filtered data as CSV reports
-- Light/Dark theme toggle
-- Fully interactive charts for insights
+Deliver actionable insights using KPIs, trends, and filters
 
----
+Publish dashboards publicly for portfolio visibility
 
-## Tech Stack & Libraries
-- **Languages:** Python 3.10+  
-- **Data Analysis:** pandas, numpy  
-- **Visualization:** matplotlib, seaborn, plotly  
-- **Machine Learning:** scikit-learn (Linear Regression)  
-- **Dashboard & UI:** Streamlit  
-- **Optional DB/ETL:** SQLite, PostgreSQL, Snowflake  
+This mirrors real enterprise analytics pipelines.
 
----
+🏥 Health Analytics Dashboard
+Metrics & Visuals
 
-## Folder Structure
-HF_AD/
-├── app.py # Streamlit dashboard (updated version)
-├── dashboard.py # Optional older version
-├── analysis.py # Data cleaning & analysis scripts
-├── data/
-│ ├── health_data_cleaned.csv
-│ └── finance_data_cleaned.csv
-├── output/ # Optional images & charts saved
-├── venv/ # Python virtual environment
-├── requirements.txt
-└── README.md
+Daily Steps Trend
 
+Sleep Hours Distribution
 
----
+Heart Rate Trend
 
-## Installation & Setup
+Calories Burned Analysis
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/saisatwi/HF_AD.git
-cd HF_AD
+Day-wise Activity Patterns
 
-2. Create and activate virtual environment
-python -m venv venv
-venv\Scripts\activate    # Windows
-# source venv/bin/activate   # macOS/Linux
+KPIs
 
-3. Install dependencies
-pip install -r requirements.txt
+Total Steps
 
-4. Run the dashboard locally
-streamlit run app.py
+Average Sleep Hours
 
-The dashboard will open in your browser at: http://localhost:8501
+Average Heart Rate
 
-Usage
+Average Calories Burned
 
-Use sidebar filters to select date ranges and finance categories.
+💰 Finance Analytics Dashboard
+Metrics & Visuals
 
-Explore KPIs, charts, and trends for health and finance.
+Income vs Expense Breakdown
 
-Download CSV reports of filtered data.
+Expense Trends Over Time
 
-Toggle Light/Dark theme for better visualization.
+Monthly Income Trend
 
-View predicted steps for next day using ML model.
+Category-wise Spending Analysis
 
-Skills Showcased
+KPIs
 
-Data Cleaning & Analysis (pandas, numpy)
+Total Income
 
-Data Visualization & Reporting (matplotlib, seaborn, plotly)
+Total Expense
 
-Machine Learning Prediction (Linear Regression with scikit-learn)
+Monthly Net Savings
 
-Interactive Dashboard Development (Streamlit)
+🧠 SQL & Data Engineering Layer
 
-Optional: SQL/ETL Integration
+Database: PostgreSQL
 
+Tables:
 
-GitHub: https://github.com/saisatwi/HF_AD
-Streamlit Dashboard: https://hfad-wa5yumpcftkn2bdbnnfxov.streamlit.app
+health_data
+
+finance_data
+
+ETL:
+
+Cleaned CSVs loaded into SQL using Python (pandas + SQLAlchemy)
+
+Enables:
+
+Scalable queries
+
+BI tool connections
+
+Future ML pipelines
+
+🖥️ Streamlit Dashboard (Python App)
+
+Fully interactive web app
+
+Sidebar filters (date, category)
+
+KPI cards
+
+Download filtered data as CSV
+
+Publicly deployed on Streamlit Cloud
+
+🔗 Live Streamlit App
+👉 https://hfad-wa5yumpcftkn2bdbnnfxov.streamlit.app
+
+📈 Tableau Dashboards (BI Layer)
+
+Built using Tableau Public and connected to processed datasets.
+
+Features
+
+Health Overview Dashboard
+
+Finance Overview Dashboard
+
+Interactive filters
+
+Business-style storytelling visuals
+
+🔗 Tableau Public Profile / Dashboard Link
+     https://public.tableau.com/views/HFAD-HealthanalyticsDashboard/HFADHealth
+     https://public.tableau.com/views/HFAD-FinanceanalyticsDashboard/HFADFinance
+
+🛠️ Tech Stack
+Languages
+
+Python 3.10+
+
+Data Analysis & ETL
+
+pandas
+
+numpy
+
+SQLAlchemy
+
+Database
+
+PostgreSQL
+
+Visualization & BI
+
+Streamlit
+
+Tableau Public
+
+Plotly
+
+Matplotlib
